@@ -1,6 +1,5 @@
 use cursive::Cursive;
 
-
 use cursive::views::*;
 
 mod callbacks;
@@ -25,7 +24,32 @@ pub fn main_screen(siv: &mut Cursive) {
 
 pub fn login_screen(siv: &mut Cursive, username: Option<String>, password: Option<String>) {
     // Views
-    let username_box = EditView::new().on_submit(|s, _| { callbacks::submit(s) });
+    let username_text = TextView::new("Username");
+    let username_box = match username { // Set content to argument
+        Some(contents) => EditView::new()
+            .content(contents),
+        None => EditView::new()
+    }.on_submit(|s, _| { callbacks::submit_login(s) });
+
+    let password_text = TextView::new("Password");
+    let password_box = match password {
+        Some(contents) => EditView::new()
+            .content(contents),
+        None => EditView::new()
+    }.secret().on_submit(|s, _| { callbacks::submit_login(s) });
 
     // Layout
+    let layout = LinearLayout::vertical()
+        .child(username_text)
+        .child(username_box)
+        .child(password_text)
+        .child(password_box);
+
+    let dialog = Dialog::around(layout)
+        .title("Login")
+        .button("Back", main_screen)
+        .button("Submit", callbacks::submit_login);
+
+    siv.pop_layer();
+    siv.add_layer(dialog);
 }
