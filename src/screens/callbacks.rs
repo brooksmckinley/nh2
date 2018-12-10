@@ -36,7 +36,7 @@ pub fn submit_login(siv: &mut Cursive) {
 
     hasher.input(password.clone().into_bytes());
 
-    eprintln!("{:?}, {:?}", &username, hasher.result());
+    eprintln!("{:?}, {:?}", &username, ::base64::encode(&hasher.result()));
 
     // Give the layer back with the information it had earlier
     login_screen(siv, Some(username), Some(password));

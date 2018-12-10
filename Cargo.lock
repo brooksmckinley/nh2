@@ -17,6 +17,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "base64"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "byteorder 1.2.7 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "bitflags"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -257,6 +265,7 @@ dependencies = [
 name = "nh2"
 version = "0.1.0"
 dependencies = [
+ "base64 0.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "cursive 0.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sha2 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -575,6 +584,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum arc-swap 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)" = "5c5ed110e2537bdd3f5b9091707a8a5556a72ac49bbd7302ae0b28fdccb3246c"
 "checksum array-macro 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)" = "8b1b1a00de235e9f2cc0e650423dc249d875c116a5934188c08fdd0c02d840ef"
 "checksum arrayvec 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)" = "f405cc4c21cd8b784f6c8fc2adf9bc00f59558f0049b5ec21517f875963040cc"
+"checksum base64 0.10.0 (registry+https://github.com/rust-lang/crates.io-index)" = "621fc7ecb8008f86d7fb9b95356cd692ce9514b80a86d85b397f32a22da7b9e2"
 "checksum bitflags 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)" = "228047a76f468627ca71776ecdebd732a3423081fcf5125585bcd7c49886ce12"
 "checksum block-buffer 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)" = "49665c62e0e700857531fa5d3763e91b539ff1abeebd56808d378b495870d60d"
 "checksum block-padding 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)" = "4fc4358306e344bf9775d0197fd00d2603e5afb0771bb353538630f022068ea3"

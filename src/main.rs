@@ -1,5 +1,6 @@
 extern crate cursive;
 extern crate sha2;
+extern crate base64;
 
 use cursive::Cursive;
 
