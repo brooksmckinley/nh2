@@ -53,3 +53,17 @@ pub fn login_screen(siv: &mut Cursive, username: Option<String>, password: Optio
     siv.pop_layer();
     siv.add_layer(dialog);
 }
+
+pub fn popup_dialog(siv: &mut Cursive, text: String) {
+    let layer = siv.pop_layer();
+    let view = TextView::new(text);
+    let dialog = Dialog::around(view)
+        .button("Ok", move |siv| {
+            siv.pop_layer();
+        });
+    // Put the dialog and previous layer back, but leave the dialog on top
+    if let Some(l) = layer {
+        siv.add_layer(l);
+    }
+    siv.add_layer(dialog);
+}

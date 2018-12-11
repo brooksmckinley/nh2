@@ -30,15 +30,15 @@ pub fn submit_login(siv: &mut Cursive) {
     // Grab the info out of the views
     let username = username_box.get_content().to_string();
     let password = password_box.get_content().to_string();
-
+    
+    // Give the layer back with the information it had earlier
+    login_screen(siv, Some(username.clone()), Some(password.clone()));
 
     let mut hasher = Sha512::default();
 
     hasher.input(password.clone().into_bytes());
 
-    //eprintln!("{:?}, {:?}", &username, ::base64::encode(&hasher.result()));
+    popup_dialog(siv, format!("{:?}, {:?}", &username, ::base64::encode(&hasher.result())));
 
-    // Give the layer back with the information it had earlier
-    login_screen(siv, Some(username), Some(password));
-}
+    }
 
