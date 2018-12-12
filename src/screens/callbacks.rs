@@ -1,13 +1,14 @@
 use cursive::views::*;
 use cursive::Cursive;
 
-use ::screens::*;
+use ::screens;
+use ::db;
 
 use sha2::Sha512;
 use sha2::Digest;
 
 pub fn login(siv: &mut Cursive) {
-    login_screen(siv, None, None);
+    screens::login_screen(siv, None, None);
 }
 
 pub fn register(siv: &mut Cursive) {
@@ -30,15 +31,18 @@ pub fn submit_login(siv: &mut Cursive) {
     // Grab the info out of the views
     let username = username_box.get_content().to_string();
     let password = password_box.get_content().to_string();
-    
-    // Give the layer back with the information it had earlier
-    login_screen(siv, Some(username.clone()), Some(password.clone()));
 
-    let mut hasher = Sha512::default();
+    // Now that we're done, give the screen back
+    screens::login_screen(siv, Some(username.clone()), Some(password.clone()));
 
-    hasher.input(password.clone().into_bytes());
-
-    popup_dialog(siv, format!("{:?}, {:?}", &username, ::base64::encode(&hasher.result())));
-
+    // Attempt to grab a user out of the database
+    let user_option = db::get_user(&username);
+    // If the user exists, validate the password
+    if let Some(user) = user_option {
+        let mut hasher = Sha512::default();
+        hasher.input(password.clone().into_bytes());
     }
-
+    else {
+        screens::popup_dialog(siv, "Invalid user.".to_string());
+    }
+}

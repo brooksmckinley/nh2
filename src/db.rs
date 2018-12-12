@@ -1,4 +1,4 @@
-use rusqlite::*;
+use rusqlite::Connection;
 
 #[derive(Clone, Debug)]
 pub struct User {
@@ -7,11 +7,27 @@ pub struct User {
     pub salt: String,
 }
 
+#[derive(Debug)]
+pub enum RegisterError {
+    InvalidName,
+    Yeet,
+}
+
 fn establish_connection() -> Connection { 
     Connection::open("./nethack.db").unwrap()
 }
 
+pub fn validate(s: &str) -> bool {
+    use regex::Regex;
+    let regex = Regex::new("^[0-9a-zA-Z]+$").unwrap();
+    regex.is_match(s)
+}
+
 pub fn get_user(name: &str) -> Option<User> {
+    // Validate the name
+    if !validate(name) {
+        return None;
+    }
     let connection = establish_connection();
     let user = connection.query_row("SELECT * FROM users WHERE name = ?1", &[name], |row| {
         User { 
@@ -20,9 +36,16 @@ pub fn get_user(name: &str) -> Option<User> {
             salt: row.get(3),
         }
     });
-    eprintln!("{:?}", user);
     match user {
         Ok(u) => Some(u),
         Err(_) => None,
     }
+}
+
+pub fn register_user(name: String, pass: String) -> Result<(), RegisterError> {
+    // Validate the name
+    if !validate(&name) {
+        return Err(RegisterError::InvalidName);
+    }
+    Ok(())
 }
