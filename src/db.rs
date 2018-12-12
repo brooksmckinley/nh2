@@ -1,4 +1,6 @@
 use rusqlite::Connection;
+use rand::Rng;
+use sha2::{Sha512, Digest};
 
 #[derive(Clone, Debug)]
 pub struct User {
@@ -10,7 +12,7 @@ pub struct User {
 #[derive(Debug)]
 pub enum RegisterError {
     InvalidName,
-    Yeet,
+    NameTaken,
 }
 
 fn establish_connection() -> Connection { 
@@ -42,10 +44,35 @@ pub fn get_user(name: &str) -> Option<User> {
     }
 }
 
-pub fn register_user(name: String, pass: String) -> Result<(), RegisterError> {
+pub fn register_user(name: String, pass: String) -> Result<User, RegisterError> {
     // Validate the name
     if !validate(&name) {
         return Err(RegisterError::InvalidName);
     }
-    Ok(())
+    // Check if the name is taken
+    if let Some(_) = get_user(&name) {
+        return Err(RegisterError::NameTaken);
+    }
+
+    // Now that we're sure that the user is available, register it.
+
+    // Generate the salt
+    let mut rng = rand::thread_rng();
+    let mut salt: [u8; 64] = [0; 64];
+    rng.fill(&mut salt);
+    let salt_base64 = ::base64::encode(&salt[..]);
+
+    // Generate the hash
+    let hasher = Sha512::default()
+        .chain(pass.into_bytes())
+        .chain(&salt[..]);
+    let hash = ::base64::encode(&hasher.result());
+
+    let user = User {
+        name: name,
+        password_hash: hash,
+        salt: salt_base64,
+    };
+    
+    Ok(user)
 }
