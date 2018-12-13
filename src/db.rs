@@ -33,9 +33,9 @@ pub fn get_user(name: &str) -> Option<User> {
     let connection = establish_connection();
     let user = connection.query_row("SELECT * FROM users WHERE name = ?1", &[name], |row| {
         User { 
-            name: row.get(1),
-            password_hash: row.get(2),
-            salt: row.get(3),
+            name: row.get(0),
+            password_hash: row.get(1),
+            salt: row.get(2),
         }
     });
     match user {
@@ -73,6 +73,10 @@ pub fn register_user(name: String, pass: String) -> Result<User, RegisterError> 
         password_hash: hash,
         salt: salt_base64,
     };
-    
+
+    // SQL that bby in
+    let connection = establish_connection();
+    connection.execute("INSERT INTO users VALUES(?1, ?2, ?3)", &[&user.name, &user.password_hash, &user.salt]).unwrap();
+
     Ok(user)
 }

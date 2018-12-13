@@ -1,5 +1,4 @@
 CREATE TABLE users (
-    id INTEGER NOT NULL PRIMARY KEY,
     name VARCHAR NOT NULL,
     password_hash VARCHAR NOT NULL,
     salt VARCHAR NOT NULL

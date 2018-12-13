@@ -39,8 +39,18 @@ pub fn submit_login(siv: &mut Cursive) {
     // If the user exists, validate the password
     if let Some(user) = user_option {
         // TODO: Validate
-        let mut hasher = Sha512::default();
-        hasher.input(password.clone().into_bytes());
+        //let mut hasher = Sha512::default();
+        //hasher.input(password.clone().into_bytes());
+        let hasher = Sha512::default()
+            .chain(password.clone().into_bytes())
+            .chain(::base64::decode(&user.salt).unwrap());
+        let hash = ::base64::encode(&hasher.result());
+        if hash == user.password_hash {
+            screens::popup_dialog(siv, "Correct password".to_string());
+        }
+        else {
+            screens::popup_dialog(siv, "Incorrect password".to_string());
+        }
     }
     else {
         screens::popup_dialog(siv, "Invalid user.".to_string());
