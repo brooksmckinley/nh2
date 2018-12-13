@@ -5,7 +5,9 @@ use std::env;
 pub fn play_game(user: &User) {
     // Check for currently running sessions to re-attach
     let reattach = Command::new("screen")
-        .arg("-dr")
+        .arg("-d")
+        .arg("-r")
+        .arg(&user.name)
         .status()
         .unwrap();
     // If there were none, start the game again

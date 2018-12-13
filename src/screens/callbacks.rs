@@ -6,6 +6,7 @@ use EXIT_CONDITION;
 use screens;
 use db;
 use db::User;
+use game;
 
 use sha2::Sha512;
 use sha2::Digest;
@@ -79,7 +80,14 @@ pub fn submit_register(siv: &mut Cursive) {
     // PASTE DONE
     // try and register the user
     let res = db::register_user(username, password);
-    screens::popup_dialog(siv, format!("{:?}", res));
+    if let Ok(user) = res {
+        game::generate_skeleton(&user);
+        screens::home_screen(siv, user);
+        screens::popup_dialog(siv, "Registration successful!".to_string());
+    }
+    else {
+        screens::popup_dialog(siv, format!("{:?}", res));
+    }
 }
 
 pub fn play(siv: &mut Cursive, user: User) {
