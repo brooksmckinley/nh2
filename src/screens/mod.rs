@@ -57,6 +57,7 @@ pub fn login_screen(siv: &mut Cursive, username: Option<String>, password: Optio
 }
 
 pub fn register_screen(siv: &mut Cursive, username: Option<String>, password: Option<String>) {
+    // TODO: Password confirmation
     // Views
     let username_text = TextView::new("Username");
     let username_box = match username { // Set content to argument
@@ -89,6 +90,7 @@ pub fn register_screen(siv: &mut Cursive, username: Option<String>, password: Op
 }
 
 pub fn home_screen(siv: &mut Cursive, user: User) {
+    // TODO: Change password button
     let text = TextView::new(format!("Welcome back {}!", user.name));
     let play = Button::new("Play", move |s| { callbacks::play(s, user.clone()) });
     let layout = LinearLayout::vertical()

@@ -86,6 +86,7 @@ pub fn submit_register(siv: &mut Cursive) {
         screens::popup_dialog(siv, "Registration successful!".to_string());
     }
     else {
+        // TODO: Friendly error handling
         screens::popup_dialog(siv, format!("{:?}", res));
     }
 }
