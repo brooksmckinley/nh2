@@ -1,6 +1,8 @@
 use cursive::views::*;
 use cursive::Cursive;
 
+use EXIT_CONDITION;
+
 use screens;
 use db;
 use db::User;
@@ -81,5 +83,8 @@ pub fn submit_register(siv: &mut Cursive) {
 }
 
 pub fn play(siv: &mut Cursive, user: User) {
-    unimplemented!()
+    // set the EXIT_CONDITION
+    unsafe { EXIT_CONDITION = Some((true, Some(user))) }
+    // quit the siv and let the main function handle the rest
+    siv.quit();
 }
