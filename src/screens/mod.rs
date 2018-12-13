@@ -2,6 +2,8 @@ use cursive::Cursive;
 
 use cursive::views::*;
 
+use db::User;
+
 pub mod callbacks;
 
 pub fn main_screen(siv: &mut Cursive) {
@@ -86,6 +88,19 @@ pub fn register_screen(siv: &mut Cursive, username: Option<String>, password: Op
     siv.add_layer(dialog);
 }
 
+pub fn home_screen(siv: &mut Cursive, user: User) {
+    let text = TextView::new(format!("Welcome back {}!", user.name));
+    let play = Button::new("Play", move |s| { callbacks::play(s, user.clone()) });
+    let layout = LinearLayout::vertical()
+        .child(text)
+        .child(play);
+    let dialog = Dialog::around(layout)
+        .title("Home Screen")
+        .button("Quit", callbacks::quit);
+    siv.pop_layer();
+    siv.add_layer(dialog);
+}
+
 pub fn popup_dialog(siv: &mut Cursive, text: String) {
     //let layer = siv.pop_layer();
     let view = TextView::new(text);
@@ -99,3 +114,4 @@ pub fn popup_dialog(siv: &mut Cursive, text: String) {
     }*/
     siv.add_layer(dialog);
 }
+

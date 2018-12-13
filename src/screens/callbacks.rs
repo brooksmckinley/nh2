@@ -1,8 +1,9 @@
 use cursive::views::*;
 use cursive::Cursive;
 
-use ::screens;
-use ::db;
+use screens;
+use db;
+use db::User;
 
 use sha2::Sha512;
 use sha2::Digest;
@@ -46,7 +47,8 @@ pub fn submit_login(siv: &mut Cursive) {
             .chain(::base64::decode(&user.salt).unwrap());
         let hash = ::base64::encode(&hasher.result());
         if hash == user.password_hash {
-            screens::popup_dialog(siv, "Correct password".to_string());
+            //screens::popup_dialog(siv, "Correct password".to_string());
+            screens::home_screen(siv, user);
         }
         else {
             screens::popup_dialog(siv, "Incorrect password".to_string());
@@ -76,4 +78,8 @@ pub fn submit_register(siv: &mut Cursive) {
     // try and register the user
     let res = db::register_user(username, password);
     screens::popup_dialog(siv, format!("{:?}", res));
+}
+
+pub fn play(siv: &mut Cursive, user: User) {
+    unimplemented!()
 }
