@@ -11,6 +11,7 @@ use db::User;
 
 pub mod screens;
 pub mod db;
+pub mod game;
 
 // This kills the functional programmer
 static mut EXIT_CONDITION: Option<(bool, Option<User>)> = None;
@@ -37,7 +38,7 @@ fn main() {
         // Run the game
         // TODO: Run the game
         if let Some(ref u) = user { 
-            println!("Do something here");
+            game::play_game(u);
         }
 
         // Now that the game is over, set the exit condition and put the interface back
