@@ -57,7 +57,6 @@ pub fn login_screen(siv: &mut Cursive, username: Option<String>, password: Optio
 }
 
 pub fn register_screen(siv: &mut Cursive, username: Option<String>, password: Option<String>) {
-    // TODO: Password confirmation
     // Views
     let username_text = TextView::new("Username");
     let username_box = match username { // Set content to argument
@@ -72,13 +71,17 @@ pub fn register_screen(siv: &mut Cursive, username: Option<String>, password: Op
             .content(contents),
         None => EditView::new()
     }.secret().on_submit(|s, _| { callbacks::submit_register(s) });
+    let password_confirm_text = TextView::new("Confirm password");
+    let password_confirmation_box = EditView::new().secret().on_submit(|s, _| { callbacks::submit_register(s) });
 
     // Layout
     let layout = LinearLayout::vertical()
         .child(username_text)
         .child(username_box)
         .child(password_text)
-        .child(password_box);
+        .child(password_box)
+        .child(password_confirm_text)
+        .child(password_confirmation_box);
 
     let dialog = Dialog::around(layout)
         .title("Register")

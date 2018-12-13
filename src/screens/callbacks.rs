@@ -69,13 +69,20 @@ pub fn submit_register(siv: &mut Cursive) {
     let layout: &LinearLayout = dialog.get_content().as_any().downcast_ref().unwrap();
     let username_box: &EditView = layout.get_child(1).unwrap().as_any().downcast_ref().unwrap();
     let password_box: &EditView = layout.get_child(3).unwrap().as_any().downcast_ref().unwrap();
+    let password_confirm_box: &EditView = layout.get_child(5).unwrap().as_any().downcast_ref().unwrap();
 
     // Grab the info out of the views
     let username = username_box.get_content().to_string();
     let password = password_box.get_content().to_string();
+    let confirmed_password = password_confirm_box.get_content().to_string();
 
     // Now that we're done, give the screen back
     screens::register_screen(siv, Some(username.clone()), Some(password.clone()));
+
+    if password != confirmed_password {
+        screens::popup_dialog(siv, "Error: Passwords do not match.".to_string());
+        return;
+    }
 
     // PASTE DONE
     // try and register the user
