@@ -54,6 +54,11 @@ pub fn register_user(name: String, pass: String) -> Result<User, RegisterError> 
         return Err(RegisterError::NameTaken);
     }
 
+    // Make sure the name isn't too long
+    if name.len() > 16 {
+        return Err(RegisterError::InvalidName);
+    }
+
     // Now that we're sure that the user is available, register it.
 
     // Generate the salt
