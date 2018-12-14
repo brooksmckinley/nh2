@@ -37,7 +37,7 @@ pub fn play_hunt(user: &User) {
         .unwrap();*/
     Command::new("bash")
         .arg("-c")
-        .arg(format!("ulimit -t5; hunt -n {} scorpionland.net", &user.name))
+        .arg(format!("ulimit -t10; nice hunt -n {} scorpionland.net", &user.name))
         .status()
         .unwrap();
 }
