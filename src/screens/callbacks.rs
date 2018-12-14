@@ -4,6 +4,7 @@ use cursive::Cursive;
 use EXIT_CONDITION;
 
 use screens;
+use screens::Game;
 use db;
 use db::User;
 use game;
@@ -98,9 +99,9 @@ pub fn submit_register(siv: &mut Cursive) {
     }
 }
 
-pub fn play(siv: &mut Cursive, user: User) {
+pub fn play(siv: &mut Cursive, user: User, game: Game) {
     // set the EXIT_CONDITION
-    unsafe { EXIT_CONDITION = Some((true, Some(user))) }
+    unsafe { EXIT_CONDITION = Some((true, Some(user), Some(game))) }
     // quit the siv and let the main function handle the rest
     siv.quit();
 }

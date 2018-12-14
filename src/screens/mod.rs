@@ -6,6 +6,12 @@ use db::User;
 
 pub mod callbacks;
 
+#[derive(Debug, Clone)]
+pub enum Game {
+    Nethack,
+    Hunt,
+}
+
 pub fn main_screen(siv: &mut Cursive) {
     // Views
     let title_view = TextView::new("Welcome to the Scorpion Land Nethack server");
@@ -95,10 +101,14 @@ pub fn register_screen(siv: &mut Cursive, username: Option<String>, password: Op
 pub fn home_screen(siv: &mut Cursive, user: User) {
     // TODO: Change password button
     let text = TextView::new(format!("Welcome back {}!", user.name));
-    let play = Button::new("Play", move |s| { callbacks::play(s, user.clone()) });
+    let nh_user = user.clone();
+    let play = Button::new("Play", move |s| { callbacks::play(s, nh_user.clone(), Game::Nethack) });
+    let hunt_user = user.clone();
+    let play_hunt = Button::new("Join Hunt", move |s| { callbacks::play(s, hunt_user.clone(), Game::Hunt) });
     let layout = LinearLayout::vertical()
         .child(text)
-        .child(play);
+        .child(play)
+        .child(play_hunt);
     let dialog = Dialog::around(layout)
         .title("Home Screen")
         .button("Quit", callbacks::quit);

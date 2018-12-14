@@ -25,6 +25,23 @@ pub fn play_game(user: &User) {
     }
 }
 
+pub fn play_hunt(user: &User) {
+    /*Command::new("ulimit")
+        .arg("-Ht")
+        .arg("5")
+        .arg("hunt")
+        .arg("-n")
+        .arg(&user.name)
+        .arg("scorpionland.net")
+        .status()
+        .unwrap();*/
+    Command::new("bash")
+        .arg("-c")
+        .arg(format!("ulimit -t5; hunt -n {} scorpionland.net", &user.name))
+        .status()
+        .unwrap();
+}
+
 pub fn generate_skeleton(user: &User) {
     Command::new("/bin/cp")
         .arg("-r")
@@ -33,3 +50,4 @@ pub fn generate_skeleton(user: &User) {
         .output()
         .unwrap();
 }
+
