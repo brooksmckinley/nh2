@@ -1,6 +1,6 @@
 use db::User;
-use std::process::Command;
 use std::env;
+use std::process::Command;
 
 pub fn play_game(user: &User) {
     // Check for currently running sessions to re-attach
@@ -27,17 +27,20 @@ pub fn play_game(user: &User) {
 
 pub fn play_hunt(user: &User) {
     /*Command::new("ulimit")
-        .arg("-Ht")
-        .arg("5")
-        .arg("hunt")
-        .arg("-n")
-        .arg(&user.name)
-        .arg("scorpionland.net")
-        .status()
-        .unwrap();*/
+    .arg("-Ht")
+    .arg("5")
+    .arg("hunt")
+    .arg("-n")
+    .arg(&user.name)
+    .arg("scorpionland.net")
+    .status()
+    .unwrap();*/
     Command::new("bash")
         .arg("-c")
-        .arg(format!("ulimit -t10; nice hunt -n {} scorpionland.net", &user.name))
+        .arg(format!(
+            "ulimit -t10; nice hunt -n {} scorpionland.net",
+            &user.name
+        ))
         .status()
         .unwrap();
 }
@@ -50,4 +53,3 @@ pub fn generate_skeleton(user: &User) {
         .output()
         .unwrap();
 }
-

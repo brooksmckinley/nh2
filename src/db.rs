@@ -1,6 +1,6 @@
-use rusqlite::Connection;
 use rand::Rng;
-use sha2::{Sha512, Digest};
+use rusqlite::Connection;
+use sha2::{Digest, Sha512};
 
 #[derive(Clone, Debug)]
 pub struct User {
@@ -15,7 +15,7 @@ pub enum RegisterError {
     NameTaken,
 }
 
-fn establish_connection() -> Connection { 
+fn establish_connection() -> Connection {
     Connection::open("./nethack.db").unwrap()
 }
 
@@ -31,12 +31,10 @@ pub fn get_user(name: &str) -> Option<User> {
         return None;
     }
     let connection = establish_connection();
-    let user = connection.query_row("SELECT * FROM users WHERE name = ?1", &[name], |row| {
-        User { 
-            name: row.get(0),
-            password_hash: row.get(1),
-            salt: row.get(2),
-        }
+    let user = connection.query_row("SELECT * FROM users WHERE name = ?1", &[name], |row| User {
+        name: row.get(0),
+        password_hash: row.get(1),
+        salt: row.get(2),
     });
     match user {
         Ok(u) => Some(u),
@@ -68,9 +66,7 @@ pub fn register_user(name: String, pass: String) -> Result<User, RegisterError> 
     let salt_base64 = ::base64::encode(&salt[..]);
 
     // Generate the hash
-    let hasher = Sha512::default()
-        .chain(pass.into_bytes())
-        .chain(&salt[..]);
+    let hasher = Sha512::default().chain(pass.into_bytes()).chain(&salt[..]);
     let hash = ::base64::encode(&hasher.result());
 
     let user = User {
@@ -81,7 +77,12 @@ pub fn register_user(name: String, pass: String) -> Result<User, RegisterError> 
 
     // SQL that bby in
     let connection = establish_connection();
-    connection.execute("INSERT INTO users VALUES(?1, ?2, ?3)", &[&user.name, &user.password_hash, &user.salt]).unwrap();
+    connection
+        .execute(
+            "INSERT INTO users VALUES(?1, ?2, ?3)",
+            &[&user.name, &user.password_hash, &user.salt],
+        )
+        .unwrap();
 
     Ok(user)
 }

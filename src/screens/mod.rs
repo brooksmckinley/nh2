@@ -33,18 +33,20 @@ pub fn main_screen(siv: &mut Cursive) {
 pub fn login_screen(siv: &mut Cursive, username: Option<String>, password: Option<String>) {
     // Views
     let username_text = TextView::new("Username");
-    let username_box = match username { // Set content to argument
-        Some(contents) => EditView::new()
-            .content(contents),
-        None => EditView::new()
-    }.on_submit(|s, _| { callbacks::submit_login(s) });
+    let username_box = match username {
+        // Set content to argument
+        Some(contents) => EditView::new().content(contents),
+        None => EditView::new(),
+    }
+    .on_submit(|s, _| callbacks::submit_login(s));
 
     let password_text = TextView::new("Password");
     let password_box = match password {
-        Some(contents) => EditView::new()
-            .content(contents),
-        None => EditView::new()
-    }.secret().on_submit(|s, _| { callbacks::submit_login(s) });
+        Some(contents) => EditView::new().content(contents),
+        None => EditView::new(),
+    }
+    .secret()
+    .on_submit(|s, _| callbacks::submit_login(s));
 
     // Layout
     let layout = LinearLayout::vertical()
@@ -65,20 +67,24 @@ pub fn login_screen(siv: &mut Cursive, username: Option<String>, password: Optio
 pub fn register_screen(siv: &mut Cursive, username: Option<String>, password: Option<String>) {
     // Views
     let username_text = TextView::new("Username");
-    let username_box = match username { // Set content to argument
-        Some(contents) => EditView::new()
-            .content(contents),
-        None => EditView::new()
-    }.on_submit(|s, _| { callbacks::submit_register(s) });
+    let username_box = match username {
+        // Set content to argument
+        Some(contents) => EditView::new().content(contents),
+        None => EditView::new(),
+    }
+    .on_submit(|s, _| callbacks::submit_register(s));
 
     let password_text = TextView::new("Password");
     let password_box = match password {
-        Some(contents) => EditView::new()
-            .content(contents),
-        None => EditView::new()
-    }.secret().on_submit(|s, _| { callbacks::submit_register(s) });
+        Some(contents) => EditView::new().content(contents),
+        None => EditView::new(),
+    }
+    .secret()
+    .on_submit(|s, _| callbacks::submit_register(s));
     let password_confirm_text = TextView::new("Confirm password");
-    let password_confirmation_box = EditView::new().secret().on_submit(|s, _| { callbacks::submit_register(s) });
+    let password_confirmation_box = EditView::new()
+        .secret()
+        .on_submit(|s, _| callbacks::submit_register(s));
 
     // Layout
     let layout = LinearLayout::vertical()
@@ -102,9 +108,13 @@ pub fn home_screen(siv: &mut Cursive, user: User) {
     // TODO: Change password button
     let text = TextView::new(format!("Welcome back {}!", user.name));
     let nh_user = user.clone();
-    let play = Button::new("Play", move |s| { callbacks::play(s, nh_user.clone(), Game::Nethack) });
+    let play = Button::new("Play", move |s| {
+        callbacks::play(s, nh_user.clone(), Game::Nethack)
+    });
     let hunt_user = user.clone();
-    let play_hunt = Button::new("Join Hunt", move |s| { callbacks::play(s, hunt_user.clone(), Game::Hunt) });
+    let play_hunt = Button::new("Join Hunt", move |s| {
+        callbacks::play(s, hunt_user.clone(), Game::Hunt)
+    });
     let layout = LinearLayout::vertical()
         .child(text)
         .child(play)
@@ -119,14 +129,12 @@ pub fn home_screen(siv: &mut Cursive, user: User) {
 pub fn popup_dialog(siv: &mut Cursive, text: String) {
     //let layer = siv.pop_layer();
     let view = TextView::new(text);
-    let dialog = Dialog::around(view)
-        .button("Ok", move |siv| {
-            siv.pop_layer();
-        });
+    let dialog = Dialog::around(view).button("Ok", move |siv| {
+        siv.pop_layer();
+    });
     // Put the dialog and previous layer back, but leave the dialog on top
     /*if let Some(l) = layer {
         siv.add_layer(l);
     }*/
     siv.add_layer(dialog);
 }
-

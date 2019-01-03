@@ -3,14 +3,14 @@ use cursive::Cursive;
 
 use EXIT_CONDITION;
 
-use screens;
-use screens::Game;
 use db;
 use db::User;
 use game;
+use screens;
+use screens::Game;
 
-use sha2::Sha512;
 use sha2::Digest;
+use sha2::Sha512;
 
 pub fn login(siv: &mut Cursive) {
     screens::login_screen(siv, None, None);
@@ -29,8 +29,18 @@ pub fn submit_login(siv: &mut Cursive) {
     let layer = siv.pop_layer().unwrap();
     let dialog: &Dialog = layer.as_any().downcast_ref().unwrap();
     let layout: &LinearLayout = dialog.get_content().as_any().downcast_ref().unwrap();
-    let username_box: &EditView = layout.get_child(1).unwrap().as_any().downcast_ref().unwrap();
-    let password_box: &EditView = layout.get_child(3).unwrap().as_any().downcast_ref().unwrap();
+    let username_box: &EditView = layout
+        .get_child(1)
+        .unwrap()
+        .as_any()
+        .downcast_ref()
+        .unwrap();
+    let password_box: &EditView = layout
+        .get_child(3)
+        .unwrap()
+        .as_any()
+        .downcast_ref()
+        .unwrap();
 
     // Grab the info out of the views
     let username = username_box.get_content().to_string();
@@ -53,12 +63,10 @@ pub fn submit_login(siv: &mut Cursive) {
         if hash == user.password_hash {
             //screens::popup_dialog(siv, "Correct password".to_string());
             screens::home_screen(siv, user);
-        }
-        else {
+        } else {
             screens::popup_dialog(siv, "Incorrect password".to_string());
         }
-    }
-    else {
+    } else {
         screens::popup_dialog(siv, "Invalid user.".to_string());
     }
 }
@@ -68,9 +76,24 @@ pub fn submit_register(siv: &mut Cursive) {
     let layer = siv.pop_layer().unwrap();
     let dialog: &Dialog = layer.as_any().downcast_ref().unwrap();
     let layout: &LinearLayout = dialog.get_content().as_any().downcast_ref().unwrap();
-    let username_box: &EditView = layout.get_child(1).unwrap().as_any().downcast_ref().unwrap();
-    let password_box: &EditView = layout.get_child(3).unwrap().as_any().downcast_ref().unwrap();
-    let password_confirm_box: &EditView = layout.get_child(5).unwrap().as_any().downcast_ref().unwrap();
+    let username_box: &EditView = layout
+        .get_child(1)
+        .unwrap()
+        .as_any()
+        .downcast_ref()
+        .unwrap();
+    let password_box: &EditView = layout
+        .get_child(3)
+        .unwrap()
+        .as_any()
+        .downcast_ref()
+        .unwrap();
+    let password_confirm_box: &EditView = layout
+        .get_child(5)
+        .unwrap()
+        .as_any()
+        .downcast_ref()
+        .unwrap();
 
     // Grab the info out of the views
     let username = username_box.get_content().to_string();
@@ -92,8 +115,7 @@ pub fn submit_register(siv: &mut Cursive) {
         game::generate_skeleton(&user);
         screens::home_screen(siv, user);
         screens::popup_dialog(siv, "Registration successful!".to_string());
-    }
-    else {
+    } else {
         // TODO: Friendly error handling
         screens::popup_dialog(siv, format!("{:?}", res));
     }
