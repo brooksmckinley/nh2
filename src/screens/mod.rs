@@ -108,7 +108,7 @@ pub fn home_screen(siv: &mut Cursive, user: User) {
     // TODO: Change password button
     let text = TextView::new(format!("Welcome back {}!", user.name));
     let nh_user = user.clone();
-    let play = Button::new("Play", move |s| {
+    let play = Button::new("Play Nethack", move |s| {
         callbacks::play(s, nh_user.clone(), Game::Nethack)
     });
     let hunt_user = user.clone();
