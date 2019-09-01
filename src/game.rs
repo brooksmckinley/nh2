@@ -17,7 +17,7 @@ pub fn play_game(user: &User) {
             .arg(&user.name)
             .arg("nethack")
             .arg("-d")
-            .arg(format!("{}/{}", env::var("PWD").unwrap(), user.name))
+            .arg(format!("{}/workspace", env::var("PWD").unwrap()))
             .arg("-u")
             .arg(&user.name)
             .status()

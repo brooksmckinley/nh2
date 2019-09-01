@@ -112,7 +112,8 @@ pub fn submit_register(siv: &mut Cursive) {
     // try and register the user
     let res = db::register_user(username, password);
     if let Ok(user) = res {
-        game::generate_skeleton(&user);
+		// Obsolete, now all users use the same workspace
+        //game::generate_skeleton(&user);
         screens::home_screen(siv, user);
         screens::popup_dialog(siv, "Registration successful!".to_string());
     } else {
