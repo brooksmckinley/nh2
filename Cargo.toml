@@ -4,7 +4,7 @@ name = "nh2"
 version = "0.1.0"
 [dependencies]
 base64 = "*"
-cursive = "*"
+cursive = "0.13.0"
 rusqlite = "*"
 sha2 = "0.8.0"
 regex = "*"

@@ -13,6 +13,7 @@ use screens::Game;
 pub mod db;
 pub mod game;
 pub mod screens;
+pub mod theme;
 
 // This kills the functional programmer
 static mut EXIT_CONDITION: Option<(bool, Option<User>, Option<Game>)> = None;
@@ -23,7 +24,8 @@ fn main() {
         EXIT_CONDITION = Some((false, None, None));
     }
 
-    let mut siv = Cursive::ncurses();
+    let mut siv = Cursive::ncurses().unwrap();
+	siv.set_theme(theme::get_theme());
     screens::main_screen(&mut siv);
     siv.run();
     drop(siv);
@@ -49,7 +51,7 @@ fn main() {
         unsafe {
             EXIT_CONDITION = Some((false, user.clone(), None));
         }
-        let mut siv = Cursive::ncurses();
+        let mut siv = Cursive::ncurses().unwrap();
         if let Some(u) = user {
             screens::home_screen(&mut siv, u);
         }
