@@ -52,6 +52,7 @@ fn main() {
             EXIT_CONDITION = Some((false, user.clone(), None));
         }
         let mut siv = Cursive::ncurses().unwrap();
+		siv.set_theme(theme::get_theme());
         if let Some(u) = user {
             screens::home_screen(&mut siv, u);
         }
